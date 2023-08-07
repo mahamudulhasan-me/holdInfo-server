@@ -49,6 +49,11 @@ async function run() {
       res.send(top10Tickers);
     });
 
+    app.get("/get-data", async (req, res) => {
+      const data = await cryptoCollection.find({}).toArray();
+      res.send(data);
+    });
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
