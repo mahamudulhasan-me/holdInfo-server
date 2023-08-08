@@ -11,8 +11,7 @@ const port = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-const uri =
-  "mongodb+srv://holdInfo:WFItEn3apHj5j29q@cluster0.beeiwwt.mongodb.net/?retryWrites=true&w=majority";
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.beeiwwt.mongodb.net/?retryWrites=true&w=majority`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -49,8 +48,12 @@ async function run() {
       res.send(top10Tickers);
     });
 
-    app.get("/get-data", async (req, res) => {
-      const data = await cryptoCollection.find({}).toArray();
+    app.get("/get-data/:cryptoName", async (req, res) => {
+      const cryptoName = req.params.cryptoName;
+
+      const data = await cryptoCollection
+        .find({ base_unit: cryptoName })
+        .toArray();
       res.send(data);
     });
 
