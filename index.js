@@ -49,12 +49,8 @@ async function run() {
       res.send(top10Tickers);
     });
 
-    app.get("/get-data/:cryptoName", async (req, res) => {
-      const cryptoName = req.params.cryptoName;
-
-      const data = await cryptoCollection
-        .find({ base_unit: cryptoName })
-        .toArray();
+    app.get("/get-data", async (req, res) => {
+      const data = await cryptoCollection.find({}).toArray();
       res.send(data);
     });
 
